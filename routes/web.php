@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\UserManagementController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Contracts\Auth;
 
@@ -59,6 +60,13 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    
 });
+
+    // User Management Routes
+    Route::resource('/user-management', UserManagementController::class);
+    // Route::get('/user-management', [UserManagementController::class,'create'])->name('user-management.create');
+    // Route::get('/user-management', [UserManagementController::class,'view'])->name('user-management.show');
+    // Route::patch('/user-management', [UserManagementController::class,'edit'])->name('user-management.edit');
 
 require __DIR__.'/auth.php';

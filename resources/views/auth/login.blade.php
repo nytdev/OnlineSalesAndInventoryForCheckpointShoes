@@ -2,6 +2,7 @@
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
     
+    
     <!-- Error Messages -->
     @if (session('error'))
         <div class="mb-4 font-medium text-sm text-red-600">
