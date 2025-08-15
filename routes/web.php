@@ -54,19 +54,15 @@ Route::get('/dashboard', function () {
     }
     
     return view('dashboard');
-})->middleware(['auth'])->name('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     
-});
-
     // User Management Routes
-    Route::resource('/user-management', UserManagementController::class);
-    // Route::get('/user-management', [UserManagementController::class,'create'])->name('user-management.create');
-    // Route::get('/user-management', [UserManagementController::class,'view'])->name('user-management.show');
-    // Route::patch('/user-management', [UserManagementController::class,'edit'])->name('user-management.edit');
+    Route::resource('user-management', UserManagementController::class);
+});
 
 require __DIR__.'/auth.php';

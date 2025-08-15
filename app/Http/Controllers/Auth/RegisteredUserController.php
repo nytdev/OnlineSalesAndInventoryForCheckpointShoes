@@ -43,11 +43,8 @@ class RegisteredUserController extends Controller
 
         event(new Registered($user));
 
-        // Auth::login($user);
+        Auth::login($user);
 
-        return redirect(route('register', absolute: true))
-            ->with('status', 'Registration successful! Please log in with your credentials.');
-
-        // return redirect(route('login'));
+        return redirect(route('verification.notice'));
     }
 }
