@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\InventoryManagementController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserManagementController;
 use Illuminate\Support\Facades\Route;
@@ -63,6 +64,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
     
     // User Management Routes
     Route::resource('user-management', UserManagementController::class);
+
+
+    //Inventory Routes
+
+    Route::resource('inventory.products', InventoryManagementController::class);
 });
 
 require __DIR__.'/auth.php';

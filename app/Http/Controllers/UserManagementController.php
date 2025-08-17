@@ -16,7 +16,7 @@ class UserManagementController extends Controller
      */
     public function index(): View
     {
-        $users = User::paginate(10);
+        $users = User::simplePaginate(10);
         return view('user-management.index', compact('users'));
     }
 

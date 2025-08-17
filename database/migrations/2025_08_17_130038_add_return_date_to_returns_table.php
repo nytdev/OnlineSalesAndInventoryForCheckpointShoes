@@ -11,13 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('returns', function (Blueprint $table) {
-            $table->id('return_id');
-            $table->foreignId('product_id');
-            $table->integer('quantity');
-            $table->string('return_status');
-            $table->float('price');
-            $table->timestamps();
+        Schema::table('returns', function (Blueprint $table) {
+            $table->timestamp('return_date')->nullable()->after('return_status');
         });
     }
 
@@ -26,6 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('returns');
+        Schema::table('returns', function (Blueprint $table) {
+            $table->dropColumn('return_date');
+        });
     }
 };

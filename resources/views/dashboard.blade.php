@@ -38,11 +38,11 @@
                         </div>
                         
                         <!-- Arrow Toggle Button -->
-                        <button @click="navOpen = true" 
+                        <button @click="navOpen = false" 
                             class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200">
-                            <svg class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            {{-- <svg class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
-                            </svg>
+                            </svg> --}}
                         </button>
                     </div>
                     
