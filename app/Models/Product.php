@@ -28,6 +28,8 @@ class Product extends Model
         'product_brand',
         'quantity',
         'price',
+        'image',
+        'description',
     ];
 
     /**

@@ -26,7 +26,12 @@ class Sale extends Model
      */
     protected $fillable = [
         'product_id',
+        'customer_id',
         'quantity',
+        'unit_price',
+        'total_amount',
+        'sale_type',
+        'notes',
         'date',
     ];
 
@@ -37,6 +42,8 @@ class Sale extends Model
      */
     protected $casts = [
         'quantity' => 'integer',
+        'unit_price' => 'decimal:2',
+        'total_amount' => 'decimal:2',
         'date' => 'datetime',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
@@ -48,6 +55,14 @@ class Sale extends Model
     public function product(): BelongsTo
     {
         return $this->belongsTo(Product::class, 'product_id', 'product_id');
+    }
+
+    /**
+     * Get the customer that owns the sale.
+     */
+    public function customer(): BelongsTo
+    {
+        return $this->belongsTo(Customer::class);
     }
 
     /**
@@ -87,17 +102,38 @@ class Sale extends Model
     }
 
     /**
-     * Get the total sale amount (quantity * product price).
+     * Get the calculated total amount if not stored.
      */
-    public function getTotalAmountAttribute(): float
+    public function getCalculatedTotalAttribute(): float
     {
-        return $this->quantity * $this->product->price;
+        if ($this->total_amount) {
+            return (float) $this->total_amount;
+        }
+        
+        $unitPrice = $this->unit_price ?? ($this->product ? $this->product->price : 0);
+        return $this->quantity * $unitPrice;
+    }
+
+    /**
+     * Scope a query to only include sales for a specific customer.
+     */
+    public function scopeForCustomer(Builder $query, $customerId): Builder
+    {
+        return $query->where('customer_id', $customerId);
+    }
+
+    /**
+     * Scope a query to only include sales of a specific type.
+     */
+    public function scopeOfType(Builder $query, string $type): Builder
+    {
+        return $query->where('sale_type', $type);
     }
 
     /**
      * Process a new sale and update product inventory.
      */
-    public static function processSale(int $productId, int $quantity, $date = null): ?self
+    public static function processSale(int $productId, int $quantity, ?int $customerId = null, ?float $unitPrice = null, $date = null): ?self
     {
         $product = Product::find($productId);
         
@@ -105,10 +141,16 @@ class Sale extends Model
             return null;
         }
 
+        $saleUnitPrice = $unitPrice ?? $product->price;
+        $totalAmount = $quantity * $saleUnitPrice;
+
         // Create the sale record
         $sale = self::create([
             'product_id' => $productId,
+            'customer_id' => $customerId,
             'quantity' => $quantity,
+            'unit_price' => $saleUnitPrice,
+            'total_amount' => $totalAmount,
             'date' => $date ?? now(),
         ]);
 
