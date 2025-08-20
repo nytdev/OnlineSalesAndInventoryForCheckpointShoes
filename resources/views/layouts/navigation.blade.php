@@ -1,4 +1,5 @@
 <nav x-data="{ open: false }" class="bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700">
+
     <!-- Primary Navigation Menu -->
     <div class="w-full mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
@@ -22,11 +23,11 @@
             <div class="hidden sm:flex sm:items-center sm:ms-6 space-x-4">
                 <!-- Theme Toggle -->
                 <x-theme-toggle />
-                
+
                 <!-- User Management Settings -->
-                <a href="{{ route('user-management.index') }}" 
-                   class="inline-flex items-center p-2 rounded-md text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-700 focus:text-gray-500 dark:focus:text-gray-400 transition duration-150 ease-in-out"
-                   title="User Management">
+                <a href="{{ route('user-management.index') }}"
+                    class="inline-flex items-center p-2 rounded-md text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-700 focus:text-gray-500 dark:focus:text-gray-400 transition duration-150 ease-in-out"
+                    title="User Management">
                     <x-settings-icon class="h-5 w-5" />
                 </a>
 
@@ -103,7 +104,7 @@
                 <x-responsive-nav-link :href="route('profile.edit')">
                     {{ __('Profile') }}
                 </x-responsive-nav-link>
-                
+
                 <x-responsive-nav-link :href="route('user-management.index')">
                     {{ __('User Management') }}
                 </x-responsive-nav-link>

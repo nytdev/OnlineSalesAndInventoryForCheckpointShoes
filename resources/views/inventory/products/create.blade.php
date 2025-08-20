@@ -10,7 +10,7 @@
                             <svg class="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
                             </svg>
-                            Back to Products
+                            <span class="text-sm">Back to Products</span>
                         </a>
                         <div>
                             <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Add New Product</h2>
@@ -80,11 +80,11 @@
                             <!-- Price -->
                             <div>
                                 <label for="price" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                                    Price (USD) <span class="text-red-500">*</span>
+                                    Price (Peso) <span class="text-red-500">*</span>
                                 </label>
                                 <div class="mt-1 relative rounded-md shadow-sm">
                                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                        <span class="text-gray-500 sm:text-sm">$</span>
+                                        <span class="text-gray-500 sm:text-sm">₱</span>
                                     </div>
                                     <input type="number" 
                                            id="price" 
