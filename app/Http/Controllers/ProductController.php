@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use App\Imports\ProductsImport;
 
-class InventoryManagementController extends Controller
+class ProductController extends Controller
 {
     /**
      * Display a listing of the resource.

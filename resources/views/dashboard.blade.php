@@ -79,7 +79,7 @@
 
                                     <!-- Composite Products -->
                                     <x-nav-item 
-                                        href="#" 
+                                        href="#"
                                         :icon="App\Helpers\NavigationHelper::getIcon('composite-products', 'w-4 h-4 mr-3')" 
                                         title="Composite Products" 
                                         size="small"
@@ -367,7 +367,7 @@
                                             </p>
                                             <p class="text-2xl font-semibold text-green-900 dark:text-green-100">{{ $salesStats['total_sales'] ?? 0 }}</p>
                                             <p class="text-xs text-green-500 dark:text-green-300 mt-1">
-                                                ${{ number_format($salesStats['total_sales_value'] ?? 0, 2) }}
+                                                ₱{{ number_format($salesStats['total_sales_value'] ?? 0, 2) }}
                                             </p>
                                         </div>
                                     </div>

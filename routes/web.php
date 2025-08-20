@@ -1,10 +1,11 @@
 <?php
 
 use App\Http\Controllers\CustomerController;
-use App\Http\Controllers\InventoryManagementController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReturnsController;
 use App\Http\Controllers\UserManagementController;
+use App\Models\Product;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Contracts\Auth;
 
@@ -57,7 +58,7 @@ Route::get('/test-stats', function () {
             'out_of_stock_products' => \App\Models\Product::where('quantity', '<=', 0)->count(),
             'total_inventory_value' => \App\Models\Product::selectRaw('SUM(quantity * price) as total')->value('total') ?? 0,
         ];
-        
+
         return response()->json([
             'success' => true,
             'message' => 'Dashboard statistics working correctly!',
@@ -79,9 +80,9 @@ Route::get('dashboard', function () {
     if (!auth()->check()) {
         return redirect()->route('login')->with('error', 'You must be logged in to access the dashboard.');
     }
-    
+
     // Get comprehensive statistics for dashboard with error handling
-    
+
     // Inventory Statistics
     try {
         $inventoryStats = [
@@ -100,7 +101,7 @@ Route::get('dashboard', function () {
             'total_inventory_value' => 0,
         ];
     }
-    
+
     // Sales Statistics
     try {
         $salesStats = [
@@ -119,7 +120,7 @@ Route::get('dashboard', function () {
             'today_sales_value' => 0,
         ];
     }
-    
+
     // Customer Statistics
     try {
         $customerStats = [
@@ -134,7 +135,7 @@ Route::get('dashboard', function () {
             'new_customers_this_month' => 0,
         ];
     }
-    
+
     // Purchase Statistics
     try {
         $purchaseStats = [
@@ -149,7 +150,7 @@ Route::get('dashboard', function () {
             'total_purchase_value' => 0,
         ];
     }
-    
+
     // Return Statistics
     try {
         $returnStats = [
@@ -172,7 +173,7 @@ Route::get('dashboard', function () {
             'this_month_returns' => 0,
         ];
     }
-    
+
     // Supplier Statistics
     try {
         $supplierStats = [
@@ -185,13 +186,13 @@ Route::get('dashboard', function () {
             'active_suppliers' => 0,
         ];
     }
-    
+
     return view('dashboard', compact(
-        'inventoryStats', 
-        'salesStats', 
-        'customerStats', 
-        'purchaseStats', 
-        'returnStats', 
+        'inventoryStats',
+        'salesStats',
+        'customerStats',
+        'purchaseStats',
+        'returnStats',
         'supplierStats'
     ));
 })->middleware(['auth', 'verified'])->name('dashboard');
@@ -200,7 +201,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    
+
     // User Management Routes
     Route::resource('user-management', UserManagementController::class);
 
@@ -213,36 +214,36 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/{customer}/edit', [CustomerController::class, 'edit'])->name('edit');
         Route::put('/{customer}', [CustomerController::class, 'update'])->name('update');
         Route::delete('/{customer}', [CustomerController::class, 'destroy'])->name('destroy');
-        
+
         // Import and Export routes
         Route::get('/import/form', [CustomerController::class, 'showImportForm'])->name('import');
         Route::post('/import/process', [CustomerController::class, 'import'])->name('import.process');
         Route::get('/template/download', [CustomerController::class, 'downloadTemplate'])->name('template');
         Route::get('/export', [CustomerController::class, 'export'])->name('export');
-        
+
         // Status toggle and analytics
         Route::post('/{customer}/toggle-status', [CustomerController::class, 'toggleStatus'])->name('toggle-status');
         Route::get('/analytics', [CustomerController::class, 'analytics'])->name('analytics');
     });
 
-    //Inventory Routes
+    //Inventory Routes for products
     Route::prefix('inventory/products')->name('inventory.products.')->group(function () {
-        Route::get('/', [InventoryManagementController::class, 'index'])->name('index');
-        Route::get('/create', [InventoryManagementController::class, 'create'])->name('create');
-        Route::post('/', [InventoryManagementController::class, 'store'])->name('store');
-        Route::get('/{product}', [InventoryManagementController::class, 'show'])->name('show');
-        Route::get('/{product}/edit', [InventoryManagementController::class, 'edit'])->name('edit');
-        Route::put('/{product}', [InventoryManagementController::class, 'update'])->name('update');
-        Route::delete('/{product}', [InventoryManagementController::class, 'destroy'])->name('destroy');
-        
+        Route::get('/', [ProductController::class, 'index'])->name('index');
+        Route::get('/create', [ProductController::class, 'create'])->name('create');
+        Route::post('/', [ProductController::class, 'store'])->name('store');
+        Route::get('/{product}', [ProductController::class, 'show'])->name('show');
+        Route::get('/{product}/edit', [ProductController::class, 'edit'])->name('edit');
+        Route::put('/{product}', [ProductController::class, 'update'])->name('update');
+        Route::delete('/{product}', [ProductController::class, 'destroy'])->name('destroy');
+
         // Import routes
-        Route::get('/import/form', [InventoryManagementController::class, 'showImportForm'])->name('import');
-        Route::post('/import', [InventoryManagementController::class, 'import'])->name('import');
-        Route::get('/template/download', [InventoryManagementController::class, 'downloadTemplate'])->name('template');
-        
+        Route::get('/import/form', [ProductController::class, 'showImportForm'])->name('import');
+        Route::post('/import', [ProductController::class, 'import'])->name('import');
+        Route::get('/template/download', [ProductController::class, 'downloadTemplate'])->name('template');
+
         // API routes
-        Route::post('/bulk-update-stock', [InventoryManagementController::class, 'bulkUpdateStock'])->name('bulk-update-stock');
-        Route::get('/alerts', [InventoryManagementController::class, 'getAlertsData'])->name('alerts');
+        Route::post('/bulk-update-stock', [ProductController::class, 'bulkUpdateStock'])->name('bulk-update-stock');
+        Route::get('/alerts', [ProductController::class, 'getAlertsData'])->name('alerts');
     });
 
     // Returns Management Routes
@@ -254,19 +255,19 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/{return}/edit', [ReturnsController::class, 'edit'])->name('edit');
         Route::put('/{return}', [ReturnsController::class, 'update'])->name('update');
         Route::delete('/{return}', [ReturnsController::class, 'destroy'])->name('destroy');
-        
+
         // Status management routes
         Route::post('/{return}/approve', [ReturnsController::class, 'approve'])->name('approve');
         Route::post('/{return}/reject', [ReturnsController::class, 'reject'])->name('reject');
         Route::post('/{return}/mark-as-processed', [ReturnsController::class, 'markAsProcessed'])->name('mark-as-processed');
-        
+
         // Bulk operations
         Route::post('/bulk-approve', [ReturnsController::class, 'bulkApprove'])->name('bulk-approve');
         Route::post('/bulk-reject', [ReturnsController::class, 'bulkReject'])->name('bulk-reject');
-        
+
         // Analytics
         Route::get('/analytics', [ReturnsController::class, 'analytics'])->name('analytics');
     });
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
