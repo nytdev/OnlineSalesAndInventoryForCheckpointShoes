@@ -6,15 +6,15 @@
     </x-slot> --}}
 
     <div class="pt-0.5 h-screen overflow-hidden" x-data="{ navOpen: true, inventoryOpen: false }">
-        <div class="flex h-full">
-            <div class="flex flex-col lg:flex-row w-full relative">
+        <div class="flex h-screen">
+            <div class="flex flex-col lg:flex-row w-full">
                 <!-- Navigation Pane -->
                 <div x-show="navOpen" x-transition:enter="transition ease-out duration-200"
                     x-transition:enter-start="opacity-0 transform -translate-x-full"
                     x-transition:enter-end="opacity-100 transform translate-x-0"
                     x-transition:leave="transition ease-in duration-150"
                     x-transition:leave-start="opacity-100 transform translate-x-0"
-                    x-transition:leave-end="opacity-0 transform -translate-x-full" :class="navOpen ? 'w-64' : 'w-0'"
+                    x-transition:leave-end="opacity-0 transform -translate-x-full" :class="navOpen ? 'w-50' : 'w-0'"
                     class="h-full bg-white dark:bg-gray-800 shadow-lg relative flex-shrink-0">
 
                     <!-- Logo Section -->
@@ -55,487 +55,253 @@
                                 Main Menu</h3>
                             <nav class="space-y-2">
                                 <!-- Home/Dashboard -->
-                                <a href="{{ route('dashboard') }}"
-                                    class="flex items-center px-4 py-2 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200 {{ request()->routeIs('dashboard') ? 'bg-blue-50 dark:bg-blue-900 text-blue-700 dark:text-blue-300 border-r-2 border-blue-500' : '' }}">
-                                    <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6">
-                                        </path>
-                                    </svg>
-                                    Dashboard
-                                </a>
+                                <x-nav-item 
+                                    route="dashboard" 
+                                    :icon="App\Helpers\NavigationHelper::getIcon('dashboard')" 
+                                    title="Dashboard" 
+                                />
 
                                 <!-- Inventory -->
-                                <div x-data="{ open: false }" class="relative">
-                                    <button @click="open = !open"
-                                        class="flex items-center justify-between w-full px-4 py-2 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200">
-                                        <div class="flex items-center">
-                                            <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor"
-                                                viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4">
-                                                </path>
-                                            </svg>
-                                            Inventory
-                                        </div>
-                                        <svg class="w-4 h-4 transform transition-transform duration-200"
-                                            :class="open ? 'rotate-180' : ''" fill="none" stroke="currentColor"
-                                            viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M19 9l-7 7-7-7"></path>
-                                        </svg>
-                                    </button>
-                                    <!-- Dropdown Menu -->
-                                    <div x-show="open" x-transition:enter="transition ease-out duration-300"
-                                        x-transition:enter-start="opacity-0 transform scale-95"
-                                        x-transition:enter-end="opacity-100 transform scale-100"
-                                        x-transition:leave="transition ease-in duration-150"
-                                        x-transition:leave-start="opacity-100 transform scale-100"
-                                        x-transition:leave-end="opacity-0 transform scale-95"
-                                        class="mt-2 ml-8 space-y-1">
+                                <x-nav-item 
+                                    route-pattern="inventory.*" 
+                                    :icon="App\Helpers\NavigationHelper::getIcon('inventory')" 
+                                    title="Inventory" 
+                                    :is-dropdown="true">
+                                    
+                                    <!-- Products -->
+                                    <x-nav-item 
+                                        route="inventory.products.index" 
+                                        route-pattern="inventory.products.*"
+                                        :icon="App\Helpers\NavigationHelper::getIcon('products', 'w-4 h-4 mr-3')" 
+                                        title="Products" 
+                                        size="small"
+                                    />
 
-                                        <!-- Products -->
-                                        <a href="{{ route('inventory.products.index') }}"
-                                            class="flex items-center px-4 py-2 text-sm text-gray-600 dark:text-gray-400 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200 {{ request()->routeIs('inventory.products.*') ? 'bg-blue-50 dark:bg-blue-900 text-blue-700 dark:text-blue-300 border-r-2 border-blue-500' : '' }}">
-                                            <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor"
-                                                viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z">
-                                                </path>
-                                            </svg>
-                                            Products
-                                        </a>
+                                    <!-- Composite Products -->
+                                    <x-nav-item 
+                                        href="#" 
+                                        :icon="App\Helpers\NavigationHelper::getIcon('composite-products', 'w-4 h-4 mr-3')" 
+                                        title="Composite Products" 
+                                        size="small"
+                                    />
 
-                                        <!-- Composite Products -->
-                                        <a href="#"
-                                            class="flex items-center px-4 py-2 text-sm text-gray-600 dark:text-gray-400 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200">
-                                            <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor"
-                                                viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10">
-                                                </path>
-                                            </svg>
-                                            Composite Products
-                                        </a>
-
-                                        <!-- Category -->
-                                        <a href="#"
-                                            class="flex items-center px-4 py-2 text-sm text-gray-600 dark:text-gray-400 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200">
-                                            <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor"
-                                                viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10">
-                                                </path>
-                                            </svg>
-                                            Category
-                                        </a>
-
-                                        <!-- Brand -->
-                                        <a href="#"
-                                            class="flex items-center px-4 py-2 text-sm text-gray-600 dark:text-gray-400 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200">
-                                            <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor"
-                                                viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z">
-                                                </path>
-                                            </svg>
-                                            Brand
-                                        </a>
-
-                                        <!-- Variations -->
-                                        <a href="#"
-                                            class="flex items-center px-4 py-2 text-sm text-gray-600 dark:text-gray-400 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200">
-                                            <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor"
-                                                viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z">
-                                                </path>
-                                            </svg>
-                                            Variations
-                                        </a>
-
-                                        <!-- Stock Adjustment -->
-                                        <a href="#"
-                                            class="flex items-center px-4 py-2 text-sm text-gray-600 dark:text-gray-400 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200">
-                                            <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor"
-                                                viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z">
-                                                </path>
-                                            </svg>
-                                            Stock Adjustment
-                                        </a>
-                                    </div>
-                                </div>
+                                    <!-- Stock Adjustment -->
+                                    <x-nav-item 
+                                        href="#" 
+                                        :icon="App\Helpers\NavigationHelper::getIcon('stock-adjustment', 'w-4 h-4 mr-3')" 
+                                        title="Stock Adjustment" 
+                                        size="small"
+                                    />
+                                </x-nav-item>
 
                                 <!-- Sales -->
-                                <div x-data="{ open: false }" class="relative">
-                                    <button @click="open = !open"
-                                        class="flex items-center justify-between w-full px-4 py-2 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200">
-                                        <div class="flex items-center">
-                                            <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor"
-                                                viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z">
-                                                </path>
-                                            </svg>
-                                            Sales
-                                        </div>
-                                        <svg class="w-4 h-4 transform transition-transform duration-200"
-                                            :class="open ? 'rotate-180' : ''" fill="none" stroke="currentColor"
-                                            viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M19 9l-7 7-7-7"></path>
-                                        </svg>
-                                    </button>
+                                <x-nav-item 
+                                    route-pattern="sales.*" 
+                                    :icon="App\Helpers\NavigationHelper::getIcon('sales')" 
+                                    title="Sales" 
+                                    :is-dropdown="true">
+                                    
+                                    <!-- Customers -->
+                                    <x-nav-item 
+                                        route="sales.customers.index" 
+                                        route-pattern="sales.customers.*"
+                                        :icon="App\Helpers\NavigationHelper::getIcon('customers', 'w-4 h-4 mr-3')" 
+                                        title="Customers" 
+                                        size="small"
+                                    />
 
-                                    <!-- Dropdown Menu -->
-                                    <div x-show="open" x-transition:enter="transition ease-out duration-200"
-                                        x-transition:enter-start="opacity-0 transform scale-95"
-                                        x-transition:enter-end="opacity-100 transform scale-100"
-                                        x-transition:leave="transition ease-in duration-150"
-                                        x-transition:leave-start="opacity-100 transform scale-100"
-                                        x-transition:leave-end="opacity-0 transform scale-95"
-                                        class="mt-2 ml-8 space-y-1">
+                                    <!-- Sales Order -->
+                                    <x-nav-item 
+                                        href="#" 
+                                        icon='<svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>' 
+                                        title="Sales Order" 
+                                        size="small"
+                                    />
 
-                                        <!-- Customers -->
-                                        <a href="{{ route('sales.customers.index') }}"
-                                            class="flex items-center px-4 py-2 text-sm text-gray-600 dark:text-gray-400 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200 {{ request()->routeIs('sales.customers.*') ? 'bg-blue-50 dark:bg-blue-900 text-blue-700 dark:text-blue-300 border-r-2 border-blue-500' : '' }}">
-                                            <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor"
-                                                viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z">
-                                                </path>
-                                            </svg>
-                                            Customers
-                                        </a>
+                                    <!-- Packages -->
+                                    <x-nav-item 
+                                        href="#" 
+                                        icon='<svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path></svg>' 
+                                        title="Packages" 
+                                        size="small"
+                                    />
 
-                                        <!-- Sales Order -->
-                                        <a href="#"
-                                            class="flex items-center px-4 py-2 text-sm text-gray-600 dark:text-gray-400 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200">
-                                            <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor"
-                                                viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
-                                                </path>
-                                            </svg>
-                                            Sales Order
-                                        </a>
+                                    <!-- Shipments -->
+                                    <x-nav-item 
+                                        href="#" 
+                                        icon='<svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>' 
+                                        title="Shipments" 
+                                        size="small"
+                                    />
 
-                                        <!-- Packages -->
-                                        <a href="#"
-                                            class="flex items-center px-4 py-2 text-sm text-gray-600 dark:text-gray-400 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200">
-                                            <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor"
-                                                viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4">
-                                                </path>
-                                            </svg>
-                                            Packages
-                                        </a>
+                                    <!-- Invoices -->
+                                    <x-nav-item 
+                                        href="#" 
+                                        icon='<svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>' 
+                                        title="Invoices" 
+                                        size="small"
+                                    />
 
-                                        <!-- Shipments -->
-                                        <a href="#"
-                                            class="flex items-center px-4 py-2 text-sm text-gray-600 dark:text-gray-400 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200">
-                                            <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor"
-                                                viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z">
-                                                </path>
-                                            </svg>
-                                            Shipments
-                                        </a>
+                                    <!-- Payments Received -->
+                                    <x-nav-item 
+                                        href="#" 
+                                        icon='<svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>' 
+                                        title="Payments Received" 
+                                        size="small"
+                                    />
 
-                                        <!-- Invoices -->
-                                        <a href="#"
-                                            class="flex items-center px-4 py-2 text-sm text-gray-600 dark:text-gray-400 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200">
-                                            <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor"
-                                                viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
-                                                </path>
-                                            </svg>
-                                            Invoices
-                                        </a>
+                                    <!-- Sales Return -->
+                                    <x-nav-item 
+                                        route="sales.returns.index" 
+                                        route-pattern="sales.returns.*"
+                                        :icon="App\Helpers\NavigationHelper::getIcon('returns', 'w-4 h-4 mr-3')" 
+                                        title="Sales Return" 
+                                        size="small"
+                                    />
 
-                                        <!-- Payments Received -->
-                                        <a href="#"
-                                            class="flex items-center px-4 py-2 text-sm text-gray-600 dark:text-gray-400 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200">
-                                            <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor"
-                                                viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z">
-                                                </path>
-                                            </svg>
-                                            Payments Received
-                                        </a>
-
-                                        <!-- Sales Return -->
-                                        <a href="#"
-                                            class="flex items-center px-4 py-2 text-sm text-gray-600 dark:text-gray-400 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200">
-                                            <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor"
-                                                viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6">
-                                                </path>
-                                            </svg>
-                                            Sales Return
-                                        </a>
-
-                                        <!-- Exchange -->
-                                        <a href="#"
-                                            class="flex items-center px-4 py-2 text-sm text-gray-600 dark:text-gray-400 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200">
-                                            <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor"
-                                                viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path>
-                                            </svg>
-                                            Exchange
-                                        </a>
-                                    </div>
-                                </div>
+                                    <!-- Exchange -->
+                                    <x-nav-item 
+                                        href="#" 
+                                        icon='<svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path></svg>' 
+                                        title="Exchange" 
+                                        size="small"
+                                    />
+                                </x-nav-item>
 
                                 <!-- Purchases -->
-                                <div x-data="{ open: false }" class="relative">
-                                    <button @click="open = !open"
-                                        class="flex items-center justify-between w-full px-4 py-2 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200">
-                                        <div class="flex items-center">
-                                            <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor"
-                                                viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-2.5 5M7 13l2.5 5m0 0h8.5m-8.5 0a2 2 0 11-4 0 2 2 0 014 0zm8.5 0a2 2 0 11-4 0 2 2 0 014 0z">
-                                                </path>
-                                            </svg>
-                                            Purchases
-                                        </div>
-                                        <svg class="w-4 h-4 transform transition-transform duration-200"
-                                            :class="open ? 'rotate-180' : ''" fill="none" stroke="currentColor"
-                                            viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M19 9l-7 7-7-7"></path>
-                                        </svg>
-                                    </button>
+                                <x-nav-item 
+                                    route-pattern="purchases.*" 
+                                    :icon="App\Helpers\NavigationHelper::getIcon('purchases')" 
+                                    title="Purchases" 
+                                    :is-dropdown="true">
+                                    
+                                    <!-- Vendor/Supplier -->
+                                    <x-nav-item 
+                                        href="#" 
+                                        icon='<svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>' 
+                                        title="Vendor/Supplier" 
+                                        size="small"
+                                    />
 
-                                    <!-- Dropdown Menu -->
-                                    <div x-show="open" x-transition:enter="transition ease-out duration-200"
-                                        x-transition:enter-start="opacity-0 transform scale-95"
-                                        x-transition:enter-end="opacity-100 transform scale-100"
-                                        x-transition:leave="transition ease-in duration-150"
-                                        x-transition:leave-start="opacity-100 transform scale-100"
-                                        x-transition:leave-end="opacity-0 transform scale-95"
-                                        class="mt-2 ml-8 space-y-1">
+                                    <!-- Purchase Order -->
+                                    <x-nav-item 
+                                        href="#" 
+                                        icon='<svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path></svg>' 
+                                        title="Purchase Order" 
+                                        size="small"
+                                    />
 
-                                        <!-- Vendor/Supplier -->
-                                        <a href="#"
-                                            class="flex items-center px-4 py-2 text-sm text-gray-600 dark:text-gray-400 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200">
-                                            <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor"
-                                                viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4">
-                                                </path>
-                                            </svg>
-                                            Vendor/Supplier
-                                        </a>
+                                    <!-- Purchase Receives -->
+                                    <x-nav-item 
+                                        href="#" 
+                                        icon='<svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"></path></svg>' 
+                                        title="Purchase Receives" 
+                                        size="small"
+                                    />
 
-                                        <!-- Purchase Order -->
-                                        <a href="#"
-                                            class="flex items-center px-4 py-2 text-sm text-gray-600 dark:text-gray-400 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200">
-                                            <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor"
-                                                viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01">
-                                                </path>
-                                            </svg>
-                                            Purchase Order
-                                        </a>
+                                    <!-- Purchase Return -->
+                                    <x-nav-item 
+                                        href="#" 
+                                        icon='<svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 10l-8 8v5h-2v-5l-8-8V2h18v8z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 16l-6-6h12l-6 6z"></path></svg>' 
+                                        title="Purchase Return" 
+                                        size="small"
+                                    />
 
-                                        <!-- Purchase Receives -->
-                                        <a href="#"
-                                            class="flex items-center px-4 py-2 text-sm text-gray-600 dark:text-gray-400 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200">
-                                            <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor"
-                                                viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4">
-                                                </path>
-                                            </svg>
-                                            Purchase Receives
-                                        </a>
+                                    <!-- Payments Made -->
+                                    <x-nav-item 
+                                        href="#" 
+                                        icon='<svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path></svg>' 
+                                        title="Payments Made" 
+                                        size="small"
+                                    />
 
-                                        <!-- Purchase Return -->
-                                        <a href="#"
-                                            class="flex items-center px-4 py-2 text-sm text-gray-600 dark:text-gray-400 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200">
-                                            <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor"
-                                                viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M21 10l-8 8v5h-2v-5l-8-8V2h18v8z"></path>
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M12 16l-6-6h12l-6 6z"></path>
-                                            </svg>
-                                            Purchase Return
-                                        </a>
-
-                                        <!-- Payments Made -->
-                                        <a href="#"
-                                            class="flex items-center px-4 py-2 text-sm text-gray-600 dark:text-gray-400 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200">
-                                            <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor"
-                                                viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z">
-                                                </path>
-                                            </svg>
-                                            Payments Made
-                                        </a>
-
-                                        <!-- Bills -->
-                                        <a href="#"
-                                            class="flex items-center px-4 py-2 text-sm text-gray-600 dark:text-gray-400 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200">
-                                            <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor"
-                                                viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
-                                                </path>
-                                            </svg>
-                                            Bills
-                                        </a>
-                                    </div>
-                                </div>
+                                    <!-- Bills -->
+                                    <x-nav-item 
+                                        href="#" 
+                                        icon='<svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>' 
+                                        title="Bills" 
+                                        size="small"
+                                    />
+                                </x-nav-item>
 
                                 <!-- Reports -->
-                                <div x-data="{ open: false }" class="relative">
-                                    <button @click="open = !open"
-                                        class="flex items-center justify-between w-full px-4 py-2 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200">
-                                        <div class="flex items-center">
-                                            <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor"
-                                                viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z">
-                                                </path>
-                                            </svg>
-                                            Reports
-                                        </div>
-                                        <svg class="w-4 h-4 transform transition-transform duration-200"
-                                            :class="open ? 'rotate-180' : ''" fill="none" stroke="currentColor"
-                                            viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M19 9l-7 7-7-7"></path>
-                                        </svg>
-                                    </button>
+                                <x-nav-item 
+                                    route-pattern="reports.*" 
+                                    :icon="App\Helpers\NavigationHelper::getIcon('reports')" 
+                                    title="Reports" 
+                                    :is-dropdown="true">
+                                    
+                                    <!-- Sales Report -->
+                                    <x-nav-item 
+                                        href="#" 
+                                        :icon="App\Helpers\NavigationHelper::getIcon('sales', 'w-4 h-4 mr-3')" 
+                                        title="Sales Report" 
+                                        size="small"
+                                    />
 
-                                    <!-- Dropdown Menu -->
-                                    <div x-show="open" x-transition:enter="transition ease-out duration-200"
-                                        x-transition:enter-start="opacity-0 transform scale-95"
-                                        x-transition:enter-end="opacity-100 transform scale-100"
-                                        x-transition:leave="transition ease-in duration-150"
-                                        x-transition:leave-start="opacity-100 transform scale-100"
-                                        x-transition:leave-end="opacity-0 transform scale-95"
-                                        class="mt-2 ml-8 space-y-1">
+                                    <!-- Purchases Report -->
+                                    <x-nav-item 
+                                        href="#" 
+                                        :icon="App\Helpers\NavigationHelper::getIcon('purchases', 'w-4 h-4 mr-3')" 
+                                        title="Purchases Report" 
+                                        size="small"
+                                    />
 
-                                        <!-- Sales Report -->
-                                        <a href="#"
-                                            class="flex items-center px-4 py-2 text-sm text-gray-600 dark:text-gray-400 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200">
-                                            <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor"
-                                                viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z">
-                                                </path>
-                                            </svg>
-                                            Sales Report
-                                        </a>
+                                    <!-- Inventory Report -->
+                                    <x-nav-item 
+                                        href="#" 
+                                        :icon="App\Helpers\NavigationHelper::getIcon('inventory', 'w-4 h-4 mr-3')" 
+                                        title="Inventory Report" 
+                                        size="small"
+                                    />
 
-                                        <!-- Purchases Report -->
-                                        <a href="#"
-                                            class="flex items-center px-4 py-2 text-sm text-gray-600 dark:text-gray-400 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200">
-                                            <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor"
-                                                viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-2.5 5M7 13l2.5 5m0 0h8.5m-8.5 0a2 2 0 11-4 0 2 2 0 014 0zm8.5 0a2 2 0 11-4 0 2 2 0 014 0z">
-                                                </path>
-                                            </svg>
-                                            Purchases Report
-                                        </a>
+                                    <!-- Returns & Exchange Lists -->
+                                    <x-nav-item 
+                                        href="#" 
+                                        icon='<svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path></svg>' 
+                                        title="Returns & Exchange Lists" 
+                                        size="small"
+                                    />
 
-                                        <!-- Inventory Report -->
-                                        <a href="#"
-                                            class="flex items-center px-4 py-2 text-sm text-gray-600 dark:text-gray-400 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200">
-                                            <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor"
-                                                viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4">
-                                                </path>
-                                            </svg>
-                                            Inventory Report
-                                        </a>
+                                    <!-- Supplier Report -->
+                                    <x-nav-item 
+                                        href="#" 
+                                        icon='<svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>' 
+                                        title="Supplier Report" 
+                                        size="small"
+                                    />
 
-                                        <!-- Returns and Exchange Lists -->
-                                        <a href="#"
-                                            class="flex items-center px-4 py-2 text-sm text-gray-600 dark:text-gray-400 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200">
-                                            <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor"
-                                                viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path>
-                                            </svg>
-                                            Returns & Exchange Lists
-                                        </a>
+                                    <!-- Profit & Loss -->
+                                    <x-nav-item 
+                                        href="#" 
+                                        icon='<svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>' 
+                                        title="Profit & Loss" 
+                                        size="small"
+                                    />
 
-                                        <!-- Supplier Report -->
-                                        <a href="#"
-                                            class="flex items-center px-4 py-2 text-sm text-gray-600 dark:text-gray-400 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200">
-                                            <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor"
-                                                viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4">
-                                                </path>
-                                            </svg>
-                                            Supplier Report
-                                        </a>
+                                    <!-- Income Report -->
+                                    <x-nav-item 
+                                        href="#" 
+                                        icon='<svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>' 
+                                        title="Income Report" 
+                                        size="small"
+                                    />
 
-                                        <!-- Profit and Loss -->
-                                        <a href="#"
-                                            class="flex items-center px-4 py-2 text-sm text-gray-600 dark:text-gray-400 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200">
-                                            <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor"
-                                                viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
-                                            </svg>
-                                            Profit & Loss
-                                        </a>
-
-                                        <!-- Income Report -->
-                                        <a href="#"
-                                            class="flex items-center px-4 py-2 text-sm text-gray-600 dark:text-gray-400 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200">
-                                            <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor"
-                                                viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z">
-                                                </path>
-                                            </svg>
-                                            Income Report
-                                        </a>
-
-                                        <!-- Expense Report -->
-                                        <a href="#"
-                                            class="flex items-center px-4 py-2 text-sm text-gray-600 dark:text-gray-400 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200">
-                                            <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor"
-                                                viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z">
-                                                </path>
-                                            </svg>
-                                            Expense Report
-                                        </a>
-                                    </div>
-                                </div>
+                                    <!-- Expense Report -->
+                                    <x-nav-item 
+                                        href="#" 
+                                        icon='<svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>' 
+                                        title="Expense Report" 
+                                        size="small"
+                                    />
+                                </x-nav-item>
 
                                 <!-- Integration -->
-                                <a href="#"
-                                    class="flex items-center px-4 py-2 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200">
-                                    <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071c3.904-3.905 10.236-3.905 14.141 0M1.394 9.393c5.857-5.857 15.355-5.857 21.213 0">
-                                        </path>
-                                    </svg>
-                                    Integration
-                                </a>
+                                <x-nav-item 
+                                    href="#" 
+                                    :icon="App\Helpers\NavigationHelper::getIcon('integration')" 
+                                    title="Integration" 
+                                />
                             </nav>
                         </div>
                     </div>
@@ -544,13 +310,15 @@
                 <!-- Show Navigation Button (when hidden) -->
                 <div x-show="!navOpen" x-transition:enter="transition ease-out duration-200"
                     x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
-                    class="fixed top-4 left-4 z-50">
-                    <button @click="navOpen = true"
-                        class="p-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg shadow-lg transition-colors duration-200">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    class="fixed top-4 left-4 pr-4">
+                    <button @click="navOpen = true">
+                    {{-- <button @click="navOpen = true"
+                        class="p-1 bg-blue-600 hover:bg-blue-700 text-white rounded-lg shadow-lg transition-colors duration-200"> --}}
+                        {{-- <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7">
                             </path>
-                        </svg>
+                        </svg> --}}
+                        ➡️
                     </button>
                 </div>
 
@@ -574,9 +342,12 @@
                                             </svg>
                                         </div>
                                         <div class="ml-4">
-                                            <p class="text-sm font-medium text-blue-600 dark:text-blue-400">Total Items
+                                            <p class="text-sm font-medium text-blue-600 dark:text-blue-400">Products
                                             </p>
-                                            <p class="text-2xl font-semibold text-blue-900 dark:text-blue-100">--</p>
+                                            <p class="text-2xl font-semibold text-blue-900 dark:text-blue-100">{{ $inventoryStats['total_products'] ?? 0 }}</p>
+                                            <p class="text-xs text-blue-500 dark:text-blue-300 mt-1">
+                                                {{ $inventoryStats['low_stock_products'] ?? 0 }} low stock
+                                            </p>
                                         </div>
                                     </div>
                                 </div>
@@ -592,13 +363,63 @@
                                             </svg>
                                         </div>
                                         <div class="ml-4">
-                                            <p class="text-sm font-medium text-green-600 dark:text-green-400">Total
-                                                Sales</p>
-                                            <p class="text-2xl font-semibold text-green-900 dark:text-green-100">--</p>
+                                            <p class="text-sm font-medium text-green-600 dark:text-green-400">Sales
+                                            </p>
+                                            <p class="text-2xl font-semibold text-green-900 dark:text-green-100">{{ $salesStats['total_sales'] ?? 0 }}</p>
+                                            <p class="text-xs text-green-500 dark:text-green-300 mt-1">
+                                                ${{ number_format($salesStats['total_sales_value'] ?? 0, 2) }}
+                                            </p>
                                         </div>
                                     </div>
                                 </div>
 
+                                <!-- Customers Card -->
+                                <div class="bg-purple-50 dark:bg-purple-900 p-4 rounded-lg">
+                                    <div class="flex items-center">
+                                        <div class="p-2 bg-purple-500 rounded-lg">
+                                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor"
+                                                viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z">
+                                                </path>
+                                            </svg>
+                                        </div>
+                                        <div class="ml-4">
+                                            <p class="text-sm font-medium text-purple-600 dark:text-purple-400">
+                                                Customers</p>
+                                            <p class="text-2xl font-semibold text-purple-900 dark:text-purple-100">{{ $customerStats['total_customers'] ?? 0 }}</p>
+                                            <p class="text-xs text-purple-500 dark:text-purple-300 mt-1">
+                                                {{ $customerStats['active_customers'] ?? 0 }} active
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Returns Card -->
+                                <div class="bg-red-50 dark:bg-red-900 p-4 rounded-lg">
+                                    <div class="flex items-center">
+                                        <div class="p-2 bg-red-500 rounded-lg">
+                                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor"
+                                                viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6">
+                                                </path>
+                                            </svg>
+                                        </div>
+                                        <div class="ml-4">
+                                            <p class="text-sm font-medium text-red-600 dark:text-red-400">
+                                                Returns</p>
+                                            <p class="text-2xl font-semibold text-red-900 dark:text-red-100">{{ $returnStats['total_returns'] ?? 0 }}</p>
+                                            <p class="text-xs text-red-500 dark:text-red-300 mt-1">
+                                                {{ $returnStats['pending_returns'] ?? 0 }} pending
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Secondary Stats Row -->
+                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-6">
                                 <!-- Purchases Card -->
                                 <div class="bg-yellow-50 dark:bg-yellow-900 p-4 rounded-lg">
                                     <div class="flex items-center">
@@ -613,27 +434,54 @@
                                         <div class="ml-4">
                                             <p class="text-sm font-medium text-yellow-600 dark:text-yellow-400">
                                                 Purchases</p>
-                                            <p class="text-2xl font-semibold text-yellow-900 dark:text-yellow-100">--
+                                            <p class="text-2xl font-semibold text-yellow-900 dark:text-yellow-100">{{ $purchaseStats['total_purchases'] ?? 0 }}</p>
+                                            <p class="text-xs text-yellow-500 dark:text-yellow-300 mt-1">
+                                                ${{ number_format($purchaseStats['total_purchase_value'] ?? 0, 2) }}
                                             </p>
                                         </div>
                                     </div>
                                 </div>
 
-                                <!-- Integration Card -->
-                                <div class="bg-purple-50 dark:bg-purple-900 p-4 rounded-lg">
+                                <!-- Suppliers Card -->
+                                <div class="bg-indigo-50 dark:bg-indigo-900 p-4 rounded-lg">
                                     <div class="flex items-center">
-                                        <div class="p-2 bg-purple-500 rounded-lg">
+                                        <div class="p-2 bg-indigo-500 rounded-lg">
                                             <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor"
                                                 viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071c3.904-3.905 10.236-3.905 14.141 0M1.394 9.393c5.857-5.857 15.355-5.857 21.213 0">
+                                                    d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4">
                                                 </path>
                                             </svg>
                                         </div>
                                         <div class="ml-4">
-                                            <p class="text-sm font-medium text-purple-600 dark:text-purple-400">
-                                                Integrations</p>
-                                            <p class="text-2xl font-semibold text-purple-900 dark:text-purple-100">--
+                                            <p class="text-sm font-medium text-indigo-600 dark:text-indigo-400">
+                                                Suppliers</p>
+                                            <p class="text-2xl font-semibold text-indigo-900 dark:text-indigo-100">{{ $supplierStats['total_suppliers'] ?? 0 }}</p>
+                                            <p class="text-xs text-indigo-500 dark:text-indigo-300 mt-1">
+                                                {{ $supplierStats['active_suppliers'] ?? 0 }} active
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Inventory Value Card -->
+                                <div class="bg-teal-50 dark:bg-teal-900 p-4 rounded-lg">
+                                    <div class="flex items-center">
+                                        <div class="p-2 bg-teal-500 rounded-lg">
+                                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor"
+                                                viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z">
+                                                </path>
+                                            </svg>
+                                        </div>
+                                        <div class="ml-4">
+                                            <p class="text-sm font-medium text-teal-600 dark:text-teal-400">
+                                                Inventory Value</p>
+                                            <p class="text-2xl font-semibold text-teal-900 dark:text-teal-100">
+                                                ${{ number_format($inventoryStats['total_inventory_value'] ?? 0, 2) }}</p>
+                                            <p class="text-xs text-teal-500 dark:text-teal-300 mt-1">
+                                                {{ $inventoryStats['out_of_stock_products'] ?? 0 }} out of stock
                                             </p>
                                         </div>
                                     </div>

@@ -77,7 +77,7 @@
                                         </div>
                                         <div>
                                             <label class="block text-sm font-medium text-gray-500 dark:text-gray-400">Price</label>
-                                            <p class="text-lg font-semibold text-green-600 dark:text-green-400">${{ number_format($product->price, 2) }}</p>
+                                            <p class="text-lg font-semibold text-green-600 dark:text-green-400">₱{{ number_format($product->price, 2) }}</p>
                                         </div>
                                     </div>
 
@@ -131,7 +131,7 @@
                                                 <div class="flex items-center justify-between text-sm">
                                                     <span class="text-gray-600 dark:text-gray-400">{{ $sale->date->format('M d, Y') }}</span>
                                                     <span class="text-red-600 dark:text-red-400">-{{ $sale->quantity }} units</span>
-                                                    <span class="text-green-600 dark:text-green-400">${{ number_format($sale->total_amount, 2) }}</span>
+                                                    <span class="text-green-600 dark:text-green-400">₱{{ number_format($sale->total_amount, 2) }}</span>
                                                 </div>
                                             @endforeach
                                         </div>
@@ -146,7 +146,7 @@
                                                 <div class="flex items-center justify-between text-sm">
                                                     <span class="text-gray-600 dark:text-gray-400">{{ $purchase->purchase_date->format('M d, Y') }}</span>
                                                     <span class="text-green-600 dark:text-green-400">+{{ $purchase->quantity }} units</span>
-                                                    <span class="text-blue-600 dark:text-blue-400">${{ number_format($purchase->total_amount, 2) }}</span>
+                                                    <span class="text-blue-600 dark:text-blue-400">₱{{ number_format($purchase->total_amount, 2) }}</span>
                                                 </div>
                                             @endforeach
                                         </div>
@@ -181,7 +181,7 @@
                                 
                                 <div class="flex items-center justify-between">
                                     <span class="text-sm text-gray-500 dark:text-gray-400">Total Revenue</span>
-                                    <span class="text-sm font-medium text-green-600 dark:text-green-400">${{ number_format($product->total_revenue, 2) }}</span>
+                                    <span class="text-sm font-medium text-green-600 dark:text-green-400">₱{{ number_format($product->total_revenue, 2) }}</span>
                                 </div>
                                 
                                 @if($product->profit_margin > 0)

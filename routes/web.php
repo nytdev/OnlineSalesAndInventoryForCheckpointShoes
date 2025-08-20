@@ -3,6 +3,7 @@
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\InventoryManagementController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ReturnsController;
 use App\Http\Controllers\UserManagementController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Contracts\Auth;
@@ -47,6 +48,30 @@ Route::post('/csrf-test', function () {
     return response()->json(['success' => true, 'message' => 'CSRF token is working!']);
 });
 
+// Test dashboard statistics
+Route::get('/test-stats', function () {
+    try {
+        $inventoryStats = [
+            'total_products' => \App\Models\Product::count(),
+            'low_stock_products' => \App\Models\Product::where('quantity', '<=', 10)->count(),
+            'out_of_stock_products' => \App\Models\Product::where('quantity', '<=', 0)->count(),
+            'total_inventory_value' => \App\Models\Product::selectRaw('SUM(quantity * price) as total')->value('total') ?? 0,
+        ];
+        
+        return response()->json([
+            'success' => true,
+            'message' => 'Dashboard statistics working correctly!',
+            'data' => $inventoryStats
+        ]);
+    } catch (\Exception $e) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Error: ' . $e->getMessage(),
+            'error' => $e->getTraceAsString()
+        ]);
+    }
+});
+
 
 // Main Route
 Route::get('dashboard', function () {
@@ -55,7 +80,120 @@ Route::get('dashboard', function () {
         return redirect()->route('login')->with('error', 'You must be logged in to access the dashboard.');
     }
     
-    return view('dashboard');
+    // Get comprehensive statistics for dashboard with error handling
+    
+    // Inventory Statistics
+    try {
+        $inventoryStats = [
+            'total_products' => \App\Models\Product::count(),
+            'active_products' => \App\Models\Product::count(), // No status column, so use total count
+            'low_stock_products' => \App\Models\Product::where('quantity', '<=', 10)->count(), // Low stock threshold of 10
+            'out_of_stock_products' => \App\Models\Product::where('quantity', '<=', 0)->count(),
+            'total_inventory_value' => \App\Models\Product::selectRaw('SUM(quantity * price) as total')->value('total') ?? 0,
+        ];
+    } catch (\Exception $e) {
+        $inventoryStats = [
+            'total_products' => 0,
+            'active_products' => 0,
+            'low_stock_products' => 0,
+            'out_of_stock_products' => 0,
+            'total_inventory_value' => 0,
+        ];
+    }
+    
+    // Sales Statistics
+    try {
+        $salesStats = [
+            'total_sales' => \App\Models\Sale::count(),
+            'today_sales' => \App\Models\Sale::whereDate('created_at', today())->count(),
+            'this_month_sales' => \App\Models\Sale::whereMonth('created_at', now()->month)->whereYear('created_at', now()->year)->count(),
+            'total_sales_value' => \App\Models\Sale::sum('total_amount') ?? 0,
+            'today_sales_value' => \App\Models\Sale::whereDate('created_at', today())->sum('total_amount') ?? 0,
+        ];
+    } catch (\Exception $e) {
+        $salesStats = [
+            'total_sales' => 0,
+            'today_sales' => 0,
+            'this_month_sales' => 0,
+            'total_sales_value' => 0,
+            'today_sales_value' => 0,
+        ];
+    }
+    
+    // Customer Statistics
+    try {
+        $customerStats = [
+            'total_customers' => \App\Models\Customer::count(),
+            'active_customers' => \App\Models\Customer::where('status', 'active')->count(),
+            'new_customers_this_month' => \App\Models\Customer::whereMonth('created_at', now()->month)->whereYear('created_at', now()->year)->count(),
+        ];
+    } catch (\Exception $e) {
+        $customerStats = [
+            'total_customers' => 0,
+            'active_customers' => 0,
+            'new_customers_this_month' => 0,
+        ];
+    }
+    
+    // Purchase Statistics
+    try {
+        $purchaseStats = [
+            'total_purchases' => \App\Models\Purchase::count(),
+            'this_month_purchases' => \App\Models\Purchase::whereMonth('created_at', now()->month)->whereYear('created_at', now()->year)->count(),
+            'total_purchase_value' => \App\Models\Purchase::sum('total_amount') ?? 0,
+        ];
+    } catch (\Exception $e) {
+        $purchaseStats = [
+            'total_purchases' => 0,
+            'this_month_purchases' => 0,
+            'total_purchase_value' => 0,
+        ];
+    }
+    
+    // Return Statistics
+    try {
+        $returnStats = [
+            'total_returns' => \App\Models\Returns::count(),
+            'pending_returns' => \App\Models\Returns::pending()->count(),
+            'approved_returns' => \App\Models\Returns::approved()->count(),
+            'total_return_value' => \App\Models\Returns::approved()->get()->sum('total_amount') ?? 0,
+            'today_returns' => \App\Models\Returns::today()->count(),
+            'this_week_returns' => \App\Models\Returns::thisWeek()->count(),
+            'this_month_returns' => \App\Models\Returns::thisMonth()->count(),
+        ];
+    } catch (\Exception $e) {
+        $returnStats = [
+            'total_returns' => 0,
+            'pending_returns' => 0,
+            'approved_returns' => 0,
+            'total_return_value' => 0,
+            'today_returns' => 0,
+            'this_week_returns' => 0,
+            'this_month_returns' => 0,
+        ];
+    }
+    
+    // Supplier Statistics
+    try {
+        $supplierStats = [
+            'total_suppliers' => \App\Models\Supplier::count(),
+            'active_suppliers' => \App\Models\Supplier::where('status', 'active')->count(),
+        ];
+    } catch (\Exception $e) {
+        $supplierStats = [
+            'total_suppliers' => 0,
+            'active_suppliers' => 0,
+        ];
+    }
+    
+    return view('dashboard', compact(
+        'inventoryStats', 
+        'salesStats', 
+        'customerStats', 
+        'purchaseStats', 
+        'returnStats', 
+        'supplierStats'
+    ));
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware(['auth', 'verified'])->group(function () {
@@ -105,6 +243,29 @@ Route::middleware(['auth', 'verified'])->group(function () {
         // API routes
         Route::post('/bulk-update-stock', [InventoryManagementController::class, 'bulkUpdateStock'])->name('bulk-update-stock');
         Route::get('/alerts', [InventoryManagementController::class, 'getAlertsData'])->name('alerts');
+    });
+
+    // Returns Management Routes
+    Route::prefix('sales/returns')->name('sales.returns.')->group(function () {
+        Route::get('/', [ReturnsController::class, 'index'])->name('index');
+        Route::get('/create', [ReturnsController::class, 'create'])->name('create');
+        Route::post('/', [ReturnsController::class, 'store'])->name('store');
+        Route::get('/{return}', [ReturnsController::class, 'show'])->name('show');
+        Route::get('/{return}/edit', [ReturnsController::class, 'edit'])->name('edit');
+        Route::put('/{return}', [ReturnsController::class, 'update'])->name('update');
+        Route::delete('/{return}', [ReturnsController::class, 'destroy'])->name('destroy');
+        
+        // Status management routes
+        Route::post('/{return}/approve', [ReturnsController::class, 'approve'])->name('approve');
+        Route::post('/{return}/reject', [ReturnsController::class, 'reject'])->name('reject');
+        Route::post('/{return}/mark-as-processed', [ReturnsController::class, 'markAsProcessed'])->name('mark-as-processed');
+        
+        // Bulk operations
+        Route::post('/bulk-approve', [ReturnsController::class, 'bulkApprove'])->name('bulk-approve');
+        Route::post('/bulk-reject', [ReturnsController::class, 'bulkReject'])->name('bulk-reject');
+        
+        // Analytics
+        Route::get('/analytics', [ReturnsController::class, 'analytics'])->name('analytics');
     });
 });
 

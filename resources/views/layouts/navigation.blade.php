@@ -5,9 +5,9 @@
         <div class="flex justify-between h-16">
             <div class="flex justify-items-stretch space-x-1">
                 <!-- Logo -->
-                <div class="shrink-0 flex items-center">
+                <div class="shrink-0 flex items-center pl-4 ">
                     <a href="{{ route('dashboard') }}">
-                        <x-application-logo class="h-12 rounded-md border" />
+                        <x-application-logo class="h-12 rounded-lg border-4" />
                     </a>
                 </div>
 
@@ -92,6 +92,13 @@
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
         </div>
+
+        {{--  --}}
+        {{-- <div class="pt-2 pb-3 space-y-1">
+            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                {{ __('Dashboard') }}
+            </x-responsive-nav-link>
+        </div> --}}
 
         <!-- Responsive Settings Options -->
         <div class="pt-4 pb-1 border-t border-gray-200 dark:border-gray-600">

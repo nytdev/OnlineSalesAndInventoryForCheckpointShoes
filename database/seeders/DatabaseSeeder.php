@@ -21,13 +21,13 @@ class DatabaseSeeder extends Seeder
             'email' => 'test@example.com',
         ]);
         
-        // Product::factory()->create([
-        //     'product_name' => 'Sakong',
-        //     'product_brand' => 'Shoe',
-        //     'quantity' => 12,
-        //     'price' => 1500.60,
-        // ]);
+        Product::factory()->create([
+            'product_name' => 'Sakong',
+            'product_brand' => 'Shoe',
+            'quantity' => 12,
+            'price' => 1500.60,
+        ]);
 
-        // Product::factory()->count(6)->create();
+        Product::factory()->count(6)->create();
     }
 }
