@@ -4,6 +4,7 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReturnsController;
+use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\UserManagementController;
 use App\Models\Product;
 use Illuminate\Support\Facades\Route;
@@ -244,6 +245,28 @@ Route::middleware(['auth', 'verified'])->group(function () {
         // API routes
         Route::post('/bulk-update-stock', [ProductController::class, 'bulkUpdateStock'])->name('bulk-update-stock');
         Route::get('/alerts', [ProductController::class, 'getAlertsData'])->name('alerts');
+    });
+
+    // Supplier Management Routes
+    Route::prefix('inventory/suppliers')->name('inventory.suppliers.')->group(function () {
+        Route::get('/', [SupplierController::class, 'index'])->name('index');
+        Route::get('/create', [SupplierController::class, 'create'])->name('create');
+        Route::post('/', [SupplierController::class, 'store'])->name('store');
+        Route::get('/{supplier}', [SupplierController::class, 'show'])->name('show');
+        Route::get('/{supplier}/edit', [SupplierController::class, 'edit'])->name('edit');
+        Route::put('/{supplier}', [SupplierController::class, 'update'])->name('update');
+        Route::delete('/{supplier}', [SupplierController::class, 'destroy'])->name('destroy');
+
+        // Import and Export routes
+        Route::get('/import/form', [SupplierController::class, 'showImportForm'])->name('import');
+        Route::post('/import/process', [SupplierController::class, 'import'])->name('import.process');
+        Route::get('/template/download', [SupplierController::class, 'downloadTemplate'])->name('template');
+        Route::get('/export', [SupplierController::class, 'export'])->name('export');
+
+        // Status toggle and analytics
+        Route::post('/{supplier}/toggle-status', [SupplierController::class, 'toggleStatus'])->name('toggle-status');
+        Route::get('/analytics', [SupplierController::class, 'analytics'])->name('analytics');
+        Route::get('/alerts', [SupplierController::class, 'getAlertsData'])->name('alerts');
     });
 
     // Returns Management Routes

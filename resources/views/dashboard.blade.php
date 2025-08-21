@@ -161,7 +161,7 @@
 
                                     <!-- Exchange -->
                                     <x-nav-item 
-                                        href="#" 
+                                        href="" 
                                         icon='<svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path></svg>' 
                                         title="Exchange" 
                                         size="small"
@@ -177,7 +177,7 @@
                                     
                                     <!-- Vendor/Supplier -->
                                     <x-nav-item 
-                                        href="#" 
+                                        route="inventory.suppliers.index" 
                                         icon='<svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>' 
                                         title="Vendor/Supplier" 
                                         size="small"
@@ -436,7 +436,7 @@
                                                 Purchases</p>
                                             <p class="text-2xl font-semibold text-yellow-900 dark:text-yellow-100">{{ $purchaseStats['total_purchases'] ?? 0 }}</p>
                                             <p class="text-xs text-yellow-500 dark:text-yellow-300 mt-1">
-                                                ${{ number_format($purchaseStats['total_purchase_value'] ?? 0, 2) }}
+                                                ₱{{ number_format($purchaseStats['total_purchase_value'] ?? 0, 2) }}
                                             </p>
                                         </div>
                                     </div>
@@ -479,7 +479,7 @@
                                             <p class="text-sm font-medium text-teal-600 dark:text-teal-400">
                                                 Inventory Value</p>
                                             <p class="text-2xl font-semibold text-teal-900 dark:text-teal-100">
-                                                ${{ number_format($inventoryStats['total_inventory_value'] ?? 0, 2) }}</p>
+                                                ₱{{ number_format($inventoryStats['total_inventory_value'] ?? 0, 2) }}</p>
                                             <p class="text-xs text-teal-500 dark:text-teal-300 mt-1">
                                                 {{ $inventoryStats['out_of_stock_products'] ?? 0 }} out of stock
                                             </p>
