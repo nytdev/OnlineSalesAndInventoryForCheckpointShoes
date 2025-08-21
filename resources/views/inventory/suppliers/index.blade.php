@@ -55,6 +55,10 @@
                                 <select id="type" name="type" 
                                         class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
                                     <option value="">All Types</option>
+                                    <option value="local" {{ request('type') == 'local' ? 'selected' : '' }}>Local</option>
+                                    <option value="distributor" {{ request('type') == 'distributor' ? 'selected' : '' }}>Distributor</option>
+                                    <option value="manufacturer" {{ request('type') == 'manufacturer' ? 'selected' : '' }}>Manufacturer</option>
+                                    <option value="service_provider" {{ request('type') == 'service_provider' ? 'selected' : '' }}>Service Provider</option>
                                     @foreach($types as $type)
                                         <option value="{{ $type }}" {{ request('type') == $type ? 'selected' : '' }}>
                                             {{ ucfirst($type) }}
