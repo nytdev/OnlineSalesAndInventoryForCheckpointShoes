@@ -40,10 +40,10 @@
 
                                 <!-- Contact Number -->
                                 <div>
-                                    <x-input-label for="supplier_contact" :value="__('Contact Number')" />
-                                    <x-text-input id="supplier_contact" name="supplier_contact" type="text" 
-                                                  class="mt-1 block w-full" :value="old('supplier_contact')" required />
-                                    <x-input-error class="mt-2" :messages="$errors->get('supplier_contact')" />
+                                    <x-input-label for="phone" :value="__('Contact Number')" />
+                                    <x-text-input id="phone" name="phone" type="text" 
+                                                  class="mt-1 block w-full" :value="old('phone')" required />
+                                    <x-input-error class="mt-2" :messages="$errors->get('phone')" />
                                 </div>
 
                                 <!-- Email -->
@@ -56,17 +56,16 @@
 
                                 <!-- Supplier Type -->
                                 <div>
-                                    <x-input-label for="type" :value="__('Supplier Type')" />
-                                    <select id="type" name="type" 
+                                    <x-input-label for="supplier_type" :value="__('Supplier Type')" />
+                                    <select id="supplier_type" name="supplier_type" 
                                             class="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm" required>
                                         <option value="">Select Type</option>
-                                        <option value="local" {{ old('type') === 'local' ? 'selected' : '' }}>Local</option>
-                                        <option value="international" {{ old('type') === 'international' ? 'selected' : '' }}>International</option>
-                                        <option value="distributor" {{ old('type') === 'distributor' ? 'selected' : '' }}>Distributor</option>
-                                        <option value="manufacturer" {{ old('type') === 'manufacturer' ? 'selected' : '' }}>Manufacturer</option>
-                                        <option value="service_provider" {{ old('type') === 'service_provider' ? 'selected' : '' }}>Service Provider</option>
+                                        <option value="local" {{ old('supplier_type') === 'local' ? 'selected' : '' }}>Local</option>
+                                        <option value="distributor" {{ old('supplier_type') === 'distributor' ? 'selected' : '' }}>Distributor</option>
+                                        <option value="manufacturer" {{ old('supplier_type') === 'manufacturer' ? 'selected' : '' }}>Manufacturer</option>
+                                        <option value="service_provider" {{ old('supplier_type') === 'service_provider' ? 'selected' : '' }}>Service Provider</option>
                                     </select>
-                                    <x-input-error class="mt-2" :messages="$errors->get('type')" />
+                                    <x-input-error class="mt-2" :messages="$errors->get('supplier_type')" />
                                 </div>
                             </div>
                         </div>

@@ -25,8 +25,8 @@ class SupplierService
         }
 
         // Apply filters
-        if ($supplierType = $request->get('type')) {
-            $query->where('type', $supplierType);
+        if ($supplierType = $request->get('supplier_type')) {
+            $query->where('supplier_type', $supplierType);
         }
 
         if ($status = $request->get('status')) {
@@ -45,7 +45,7 @@ class SupplierService
         $sortField = $request->get('sort', 'created_at');
         $sortOrder = $request->get('order', 'desc');
         
-        if (in_array($sortField, ['supplier_name', 'email', 'type', 'status', 'created_at'])) {
+        if (in_array($sortField, ['supplier_name', 'email', 'supplier_type', 'status', 'created_at'])) {
             $query->orderBy($sortField, $sortOrder);
         }
 
@@ -58,9 +58,9 @@ class SupplierService
     public function getFilterOptions(): array
     {
         return [
-            'types' => Supplier::whereNotNull('type')
+            'types' => Supplier::whereNotNull('supplier_type')
                               ->distinct()
-                              ->pluck('type')
+                              ->pluck('supplier_type')
                               ->filter()
                               ->sort()
                               ->values(),
@@ -87,7 +87,7 @@ class SupplierService
         // Set defaults
         $data['status'] = $data['status'] ?? 'active';
         $data['country'] = $data['country'] ?? 'Philippines';
-        $data['type'] = $data['type'] ?? 'local';
+        $data['supplier_type'] = $data['supplier_type'] ?? 'local';
 
         return Supplier::create($data);
     }
@@ -136,9 +136,9 @@ class SupplierService
         $inactiveSuppliers = Supplier::inactive()->count();
 
         // Supplier types distribution
-        $typeDistribution = Supplier::selectRaw('type, COUNT(*) as count')
-                                  ->whereNotNull('type')
-                                  ->groupBy('type')
+        $typeDistribution = Supplier::selectRaw('supplier_type, COUNT(*) as count')
+                                  ->whereNotNull('supplier_type')
+                                  ->groupBy('supplier_type')
                                   ->orderByDesc('count')
                                   ->get();
 
@@ -326,7 +326,7 @@ class SupplierService
 
         // Type filter
         if (!empty($criteria['types'])) {
-            $query->whereIn('type', $criteria['types']);
+            $query->whereIn('supplier_type', $criteria['types']);
         }
 
         return $query->paginate($perPage);
@@ -346,7 +346,7 @@ class SupplierService
                     case 'search':
                         $query->search($value);
                         break;
-                    case 'type':
+                    case 'supplier_type':
                     case 'status':
                     case 'city':
                     case 'country':

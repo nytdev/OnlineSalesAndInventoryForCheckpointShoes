@@ -1,6 +1,6 @@
 <x-app-layout>
     <div class="py-6">
-        <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
+        <div class="max-w-8xl mx-auto sm:px-6 lg:px-8">
             <!-- Header Section -->
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg mb-6">
                 <div class="p-6">
@@ -106,6 +106,41 @@
                             </x-primary-button>
                         </div>
                     </form>
+                </div>
+            </div>
+                        <!-- Sample Data Preview -->
+            <div class="mt-6 bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+                <div class="p-6">
+                    <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-4">Sample Data Format</h3>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700 text-sm">
+                            <thead class="bg-gray-50 dark:bg-gray-700">
+                                <tr>
+                                    <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">supplier_name *</th>
+                                    <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">phone</th>
+                                    <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">email *</th>
+                                    <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">supplier_type</th>
+                                    <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">company_name</th>
+                                    <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">city</th>
+                                    <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">country</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+                                <tr>
+                                    <td class="px-3 py-2 whitespace-nowrap text-gray-900 dark:text-white">ABC Supplies Inc.</td>
+                                    <td class="px-3 py-2 whitespace-nowrap text-gray-900 dark:text-white">+1234567890</td>
+                                    <td class="px-3 py-2 whitespace-nowrap text-gray-900 dark:text-white">contact@abcsupplies.com</td>
+                                    <td class="px-3 py-2 whitespace-nowrap text-gray-900 dark:text-white">local</td>
+                                    <td class="px-3 py-2 whitespace-nowrap text-gray-500 dark:text-gray-400">-</td>
+                                    <td class="px-3 py-2 whitespace-nowrap text-gray-900 dark:text-white">Manila</td>
+                                    <td class="px-3 py-2 whitespace-nowrap text-gray-900 dark:text-white">Philippines</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p class="mt-2 text-xs text-gray-500 dark:text-gray-400">
+                        * Required fields. Other available fields: address, state, postal_code,tax_id, notes.
+                    </p>
                 </div>
             </div>
         </div>

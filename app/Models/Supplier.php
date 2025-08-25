@@ -26,17 +26,17 @@ class Supplier extends Model
      */
     protected $fillable = [
         'supplier_name',
-        'supplier_contact',
-        'type',
+        'phone',
         'email',
+        'supplier_type',
         'address',
         'city',
         'state',
         'postal_code',
         'country',
-        'status',
         'tax_id',
         'payment_terms',
+        'status',
         'notes',
     ];
 
@@ -70,7 +70,7 @@ class Supplier extends Model
             $this->postal_code,
             $this->country,
         ]);
-        
+
         return implode(', ', $addressParts);
     }
 
@@ -96,11 +96,11 @@ class Supplier extends Model
     public function getAverageOrderValueAttribute(): float
     {
         $totalOrders = $this->total_orders;
-        
+
         if ($totalOrders === 0) {
             return 0.0;
         }
-        
+
         return $this->total_purchased / $totalOrders;
     }
 
@@ -110,7 +110,7 @@ class Supplier extends Model
     public function getLastOrderDateAttribute(): ?Carbon
     {
         $lastPurchase = $this->purchases()->latest('purchase_date')->first();
-        
+
         return $lastPurchase ? $lastPurchase->purchase_date : null;
     }
 
@@ -137,9 +137,9 @@ class Supplier extends Model
     {
         return $query->where(function ($q) use ($search) {
             $q->where('supplier_name', 'LIKE', "%{$search}%")
-              ->orWhere('email', 'LIKE', "%{$search}%")
-              ->orWhere('supplier_contact', 'LIKE', "%{$search}%")
-              ->orWhere('tax_id', 'LIKE', "%{$search}%");
+                ->orWhere('email', 'LIKE', "%{$search}%")
+                ->orWhere('supplier_contact', 'LIKE', "%{$search}%")
+                ->orWhere('tax_id', 'LIKE', "%{$search}%");
         });
     }
 
@@ -148,7 +148,7 @@ class Supplier extends Model
      */
     public function scopeByType(Builder $query, string $type): Builder
     {
-        return $query->where('type', $type);
+        return $query->where('supplier_type', $type);
     }
 
     /**
@@ -157,9 +157,9 @@ class Supplier extends Model
     public static function topSuppliers(int $limit = 10)
     {
         return self::with(['purchases'])
-                   ->get()
-                   ->sortByDesc('total_purchased')
-                   ->take($limit);
+            ->get()
+            ->sortByDesc('total_purchased')
+            ->take($limit);
     }
 
     /**

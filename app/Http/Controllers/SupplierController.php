@@ -48,17 +48,17 @@ class SupplierController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'supplier_name' => 'required|string|max:255',
-            'supplier_contact' => 'required|string|max:20',
+            'phone' => 'nullable|string|max:20',
             'email' => 'required|email|unique:suppliers,email|max:255',
-            'type' => 'required|string|in:local,distributor,manufacturer,service_provider',
+            'supplier_type' => 'required|string|in:local,distributor,manufacturer,service_provider',
             'address' => 'nullable|string|max:1000',
             'city' => 'nullable|string|max:255',
             'state' => 'nullable|string|max:255',
             'postal_code' => 'nullable|string|max:20',
             'country' => 'nullable|string|max:255',
-            'status' => 'required|in:active,inactive',
             'tax_id' => 'nullable|string|max:50',
             'payment_terms' => 'nullable|string|max:255',
+            'status' => 'required|in:active,inactive',
             'notes' => 'nullable|string|max:2000',
         ]);
 
@@ -82,20 +82,20 @@ class SupplierController extends Controller
     {
         // Load relationships for detailed view
         $supplier->load(['purchases', 'purchases.product', 'purchases.user']);
-        
+
         // Get supplier statistics and performance
         $recentPurchases = $supplier->purchases()->latest('purchase_date')->take(10)->get();
         $performance = $this->supplierService->calculateSupplierPerformance($supplier);
-        
+
         // Monthly purchase data for chart
         $monthlyPurchases = $supplier->purchases()
             ->with('product')
             ->whereYear('purchase_date', date('Y'))
             ->get()
-            ->groupBy(function($purchase) {
+            ->groupBy(function ($purchase) {
                 return $purchase->purchase_date->format('F');
             })
-            ->map(function($purchases) {
+            ->map(function ($purchases) {
                 return [
                     'total_amount' => $purchases->sum('total_amount'),
                     'count' => $purchases->count()
@@ -120,17 +120,17 @@ class SupplierController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'supplier_name' => 'required|string|max:255',
-            'supplier_contact' => 'required|string|max:20',
+            'phone' => 'nullable|string|max:20',
             'email' => 'required|email|unique:suppliers,email,' . $supplier->supplier_id . ',supplier_id|max:255',
-            'type' => 'required|string|in:local,distributor,manufacturer,service_provider',
+            'supplier_type' => 'required|string|in:local,distributor,manufacturer,service_provider',
             'address' => 'nullable|string|max:1000',
             'city' => 'nullable|string|max:255',
             'state' => 'nullable|string|max:255',
             'postal_code' => 'nullable|string|max:20',
             'country' => 'nullable|string|max:255',
-            'status' => 'required|in:active,inactive',
             'tax_id' => 'nullable|string|max:50',
             'payment_terms' => 'nullable|string|max:255',
+            'status' => 'required|in:active,inactive',
             'notes' => 'nullable|string|max:2000',
         ]);
 
@@ -190,7 +190,7 @@ class SupplierController extends Controller
             $import->import($request->file('excel_file'));
 
             $importedCount = $import->getRowCount();
-            
+
             return redirect()->route('inventory.suppliers.index')
                 ->with('success', "Successfully imported {$importedCount} suppliers!");
 
@@ -212,18 +212,18 @@ class SupplierController extends Controller
 
         // Create sample data for template
         $sampleData = [
-            ['Supplier Name', 'Contact', 'Email', 'Type', 'Address', 'City', 'State', 'Postal Code', 'Country', 'Tax ID', 'Payment Terms', 'Notes'],
-            ['ABC Supplies Inc.', '+1234567890', 'contact@abcsupplies.com', 'distributor', '123 Industrial St', 'Manila', 'NCR', '1000', 'Philippines', 'TAX123456', 'Net 30', 'Reliable local distributor'],
+            ['Supplier Name', 'Phone', 'Email', 'Supplier Type', 'Address', 'City', 'State', 'Postal Code', 'Country', 'Tax ID', 'Payment Terms', 'Notes'],
+            ['ABC Supplies Inc.', '+1234567890', 'contact@abcsupplies.com', 'local', '123 Industrial St', 'Manila', 'NCR', '1000', 'Philippines', 'TAX123456', 'Net 30', 'Reliable local distributor'],
             ['Global Manufacturing Co.', '+8765432109', 'orders@globalmanuf.com', 'manufacturer', '456 Factory Ave', 'Cebu', 'Cebu', '6000', 'Philippines', 'TAX789012', 'Net 45', 'International manufacturer'],
         ];
 
-        $callback = function() use ($sampleData) {
+        $callback = function () use ($sampleData) {
             $file = fopen('php://output', 'w');
-            
+
             foreach ($sampleData as $row) {
                 fputcsv($file, $row);
             }
-            
+
             fclose($file);
         };
 
@@ -263,25 +263,39 @@ class SupplierController extends Controller
             'Content-Disposition' => 'attachment; filename="suppliers_export_' . date('Y-m-d') . '.csv"',
         ];
 
-        $callback = function() use ($suppliers) {
+        $callback = function () use ($suppliers) {
             $file = fopen('php://output', 'w');
-            
+
             // Headers
             fputcsv($file, [
-                'ID', 'Supplier Name', 'Contact', 'Email', 'Type', 'Address', 
-                'City', 'State', 'Postal Code', 'Country', 'Tax ID', 
-                'Payment Terms', 'Status', 'Total Orders', 'Total Purchased', 
-                'Last Order Date', 'Created At'
+                'ID',
+                'First Name',
+                'Last Name',
+                'Email',
+                'Phone',
+                'Address',
+                'City',
+                'State',
+                'Postal Code',
+                'Country',
+                'Tax ID',
+                'Payment Terms',
+                'Notes',
+                'Status',
+                'Total Orders',
+                'Total Purchased',
+                'Last Order Date',
+                'Created At'
             ]);
-            
+
             // Data
             foreach ($suppliers as $supplier) {
                 fputcsv($file, [
                     $supplier->supplier_id,
-                    $supplier->supplier_name,
-                    $supplier->supplier_contact,
+                    $supplier->first_name,
+                    $supplier->last_name,
                     $supplier->email,
-                    $supplier->type,
+                    $supplier->phone,
                     $supplier->address,
                     $supplier->city,
                     $supplier->state,
@@ -289,6 +303,7 @@ class SupplierController extends Controller
                     $supplier->country,
                     $supplier->tax_id,
                     $supplier->payment_terms,
+                    $supplier->notes,
                     $supplier->status,
                     $supplier->total_orders,
                     number_format($supplier->total_purchased, 2),
@@ -296,7 +311,7 @@ class SupplierController extends Controller
                     $supplier->created_at->format('Y-m-d H:i:s'),
                 ]);
             }
-            
+
             fclose($file);
         };
 
