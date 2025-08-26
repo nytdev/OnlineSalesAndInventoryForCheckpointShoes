@@ -85,9 +85,10 @@
                                         size="small"
                                     />
 
-                                    <!-- Stock Adjustment -->
+                                    <!-- Stock Management -->
                                     <x-nav-item 
-                                        href="#" 
+                                        route="inventory.stock.index" 
+                                        route-pattern="inventory.stock.*"
                                         :icon="App\Helpers\NavigationHelper::getIcon('stock-adjustment', 'w-4 h-4 mr-3')" 
                                         title="Stock Adjustment" 
                                         size="small"

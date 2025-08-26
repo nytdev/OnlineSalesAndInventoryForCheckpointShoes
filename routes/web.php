@@ -4,6 +4,7 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReturnsController;
+use App\Http\Controllers\StockController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\UserManagementController;
 use App\Models\Product;
@@ -267,6 +268,39 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/{supplier}/toggle-status', [SupplierController::class, 'toggleStatus'])->name('toggle-status');
         Route::get('/analytics', [SupplierController::class, 'analytics'])->name('analytics');
         Route::get('/alerts', [SupplierController::class, 'getAlertsData'])->name('alerts');
+    });
+
+    // Stock Management Routes
+    Route::prefix('inventory/stock')->name('inventory.stock.')->group(function () {
+        Route::get('/', [StockController::class, 'index'])->name('index');
+        Route::get('/create', [StockController::class, 'create'])->name('create');
+        Route::post('/', [StockController::class, 'store'])->name('store');
+        Route::get('/{stock}', [StockController::class, 'show'])->name('show');
+        Route::get('/{stock}/edit', [StockController::class, 'edit'])->name('edit');
+        Route::put('/{stock}', [StockController::class, 'update'])->name('update');
+        Route::delete('/{stock}', [StockController::class, 'destroy'])->name('destroy');
+
+        // Stock movement operations
+        Route::post('/{stock}/confirm', [StockController::class, 'confirm'])->name('confirm');
+        
+        // Transfer operations
+        Route::get('/transfer/form', [StockController::class, 'showTransferForm'])->name('transfer.form');
+        Route::post('/transfer/process', [StockController::class, 'processTransfer'])->name('transfer.process');
+        
+        // Waste/damage operations
+        Route::get('/waste/form', [StockController::class, 'showWasteForm'])->name('waste.form');
+        Route::post('/waste/process', [StockController::class, 'processWaste'])->name('waste.process');
+        
+        // Import and Export routes
+        Route::get('/import/form', [StockController::class, 'showImportForm'])->name('import');
+        Route::post('/import/process', [StockController::class, 'import'])->name('import.process');
+        Route::get('/template/download', [StockController::class, 'downloadTemplate'])->name('template');
+        Route::get('/export', [StockController::class, 'export'])->name('export');
+        
+        // Analytics and reporting
+        Route::get('/analytics', [StockController::class, 'analytics'])->name('analytics');
+        Route::get('/product/{product}/history', [StockController::class, 'productHistory'])->name('product.history');
+        Route::get('/alerts', [StockController::class, 'getAlertsData'])->name('alerts');
     });
 
     // Returns Management Routes
