@@ -184,6 +184,51 @@ Well-structured relational database with normalized tables:
 - **Modular Architecture**: Separation of concerns
 - **Error Handling**: Graceful error management
 
+## 🌐 **Deployment Options**
+
+### **🚂 Railway (Recommended)**
+Easiest deployment with automatic Laravel detection:
+
+1. **Connect GitHub to Railway**
+   - Go to [railway.app](https://railway.app)
+   - Sign up with your GitHub account
+   - Create new project → "Deploy from GitHub repo"
+
+2. **Select Repository**
+   - Choose `OnlineSalesAndInventoryForCheckpointShoes`
+   - Railway will auto-detect Laravel configuration
+
+3. **Environment Variables**
+   - Set `APP_KEY` (generate with `php artisan key:generate --show`)
+   - Configure `APP_URL` with your Railway domain
+   - Database will use SQLite automatically
+
+4. **Deploy**
+   - Railway automatically builds and deploys
+   - Access your live app at the provided URL
+
+### **⚡ Vercel**
+Great for demos and portfolio showcasing:
+
+1. **Import GitHub Repository**
+   - Go to [vercel.com](https://vercel.com)
+   - "New Project" → Import from GitHub
+   - Select your repository
+
+2. **Configure Environment**
+   - Add environment variables from `.env.production.example`
+   - Generate APP_KEY: `php artisan key:generate --show`
+
+3. **Deploy**
+   - Vercel handles build and deployment automatically
+   - Live URL provided instantly
+
+### **🔧 Pre-Deployment Checklist**
+- ✅ Environment variables configured
+- ✅ Database migrations ready (`php artisan migrate --force`)
+- ✅ Assets compiled (`npm run build`)
+- ✅ Cache optimized (`php artisan optimize`)
+
 ## 💡 **Key Technical Achievements**
 
 ✅ **Complex Business Logic**: Implemented sophisticated inventory algorithms  
