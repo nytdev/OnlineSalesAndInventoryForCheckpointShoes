@@ -1,20 +1,22 @@
 <x-app-layout>
     <div class="py-6">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+        <div class="w-full mx-auto sm:px-6 lg:px-8">
             <!-- Header Section -->
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg mb-6">
                 <div class="p-6">
-                    <div class="flex items-center">
-                        <a href="{{ route('inventory.products.index') }}"  
-                           class="inline-flex items-center text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100 mr-4">
-                            <svg class="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
-                            </svg>
-                            Back to Products
-                        </a>
+                    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between">
                         <div>
                             <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Add New Product</h2>
                             <p class="text-gray-600 dark:text-gray-400">Create a new product in your inventory</p>
+                        </div>
+                        <div class="flex space-x-3 mt-4 sm:mt-0">
+                            <a href="{{ route('inventory.products.index') }}" 
+                               class="inline-flex items-center px-4 py-2 bg-gray-300 border border-transparent rounded-md font-semibold text-xs text-gray-700 uppercase tracking-widest hover:bg-gray-400 focus:bg-gray-400 active:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150">
+                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                                </svg>
+                                Back to Products
+                            </a>
                         </div>
                     </div>
                 </div>

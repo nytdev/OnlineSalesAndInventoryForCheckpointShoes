@@ -5,7 +5,7 @@
         <div class="flex justify-between h-14">
             <div class="flex justify-items-stretch space-x-1">
                 <!-- Logo -->
-                <div class="shrink-0 flex items-center pl-4 ">
+                <div class="shrink-0 flex items-center pl-8 ">
                     <a href="{{ route('dashboard') }}">
                         <x-application-logo class="h-12 rounded-lg border-4" />
                     </a>
@@ -28,7 +28,7 @@
                 <a href="{{ route('user-management.index') }}"
                     class="inline-flex items-center p-2 rounded-md text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-700 focus:text-gray-500 dark:focus:text-gray-400 transition duration-150 ease-in-out"
                     title="User Management">
-                    <x-settings-icon class="h-5 w-5" />
+                    {{-- <x-settings-icon class="h-5 w-5" /> --}}
                 </a>
 
                 <x-dropdown align="right" width="48">

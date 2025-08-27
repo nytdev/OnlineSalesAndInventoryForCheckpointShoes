@@ -4,6 +4,7 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReturnsController;
+use App\Http\Controllers\SalesOrderController;
 use App\Http\Controllers\StockController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\UserManagementController;
@@ -301,6 +302,24 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/analytics', [StockController::class, 'analytics'])->name('analytics');
         Route::get('/product/{product}/history', [StockController::class, 'productHistory'])->name('product.history');
         Route::get('/alerts', [StockController::class, 'getAlertsData'])->name('alerts');
+    });
+
+    // Sales Order Management Routes
+    Route::prefix('sales/orders')->name('sales.orders.')->group(function () {
+        Route::get('/', [SalesOrderController::class, 'index'])->name('index');
+        Route::get('/create', [SalesOrderController::class, 'create'])->name('create');
+        Route::post('/', [SalesOrderController::class, 'store'])->name('store');
+        Route::get('/{order}', [SalesOrderController::class, 'show'])->name('show');
+        Route::get('/{order}/edit', [SalesOrderController::class, 'edit'])->name('edit');
+        Route::put('/{order}', [SalesOrderController::class, 'update'])->name('update');
+        Route::delete('/{order}', [SalesOrderController::class, 'destroy'])->name('destroy');
+
+        // Status management routes
+        Route::post('/{order}/change-status', [SalesOrderController::class, 'changeStatus'])->name('change-status');
+        Route::post('/{order}/fulfill', [SalesOrderController::class, 'fulfill'])->name('fulfill');
+
+        // Analytics
+        Route::get('/analytics', [SalesOrderController::class, 'analytics'])->name('analytics');
     });
 
     // Returns Management Routes

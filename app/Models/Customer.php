@@ -63,6 +63,14 @@ class Customer extends Model
     }
 
     /**
+     * Get the sales orders for the customer.
+     */
+    public function salesOrders(): HasMany
+    {
+        return $this->hasMany(SalesOrder::class, 'customer_id', 'customer_id');
+    }
+
+    /**
      * Get the customer's full name.
      */
     public function getFullNameAttribute(): string
