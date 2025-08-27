@@ -1,6 +1,6 @@
 <x-app-layout>
     <div class="py-6">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+        <div class="w-full mx-auto sm:px-6 lg:px-8">
             <!-- Header Section -->
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg mb-6">
                 <div class="p-6">
@@ -96,15 +96,20 @@
                         <div class="flex items-center">
                             <div class="flex-shrink-0">
                                 <div class="w-8 h-8 bg-purple-500 rounded-md flex items-center justify-center">
+                                    {{-- Peso Icon --}}
                                     <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path>
+                                        <path d="M4 6h2v12h-2V6z" fill="currentColor"/>
+                                        <path d="M6 6h6c2.2 0 4 1.8 4 4s-1.8 4-4 4H6v4h-2v-4h2V6z" fill="currentColor"/>
+                                        <path d="M6 8v4h6c1.1 0 2-0.9 2-2s-0.9-2-2-2H6z" fill="currentColor"/>
+                                        <path d="M2 9h8v1H2V9z" fill="currentColor"/>
+                                        <path d="M2 12h8v1H2v-1z" fill="currentColor"/>
                                     </svg>
                                 </div>
                             </div>
                             <div class="ml-5 w-0 flex-1">
                                 <dl>
                                     <dt class="text-sm font-medium text-gray-500 dark:text-gray-400 truncate">Total Value</dt>
-                                    <dd class="text-lg font-medium text-gray-900 dark:text-white">${{ number_format($statistics['total_return_value'], 2) }}</dd>
+                                    <dd class="text-lg font-medium text-gray-900 dark:text-white">₱{{ number_format($statistics['total_return_value'], 2) }}</dd>
                                 </dl>
                             </div>
                         </div>

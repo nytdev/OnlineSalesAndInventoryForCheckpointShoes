@@ -5,8 +5,8 @@
         </h2>
     </x-slot> --}}
 
-    <div class="pt-0.5 h-screen overflow-hidden" x-data="{ navOpen: true, inventoryOpen: false }">
-        <div class="flex h-screen justify-stretch">
+    <div class="overflow-hidden" x-data="{ navOpen: true, inventoryOpen: false }">
+        <div class=" flex h-screen">
             <div class="flex flex-row lg:flex-row w-full">
                 <!-- Navigation Pane -->
                 <div x-show="navOpen" x-transition:enter="transition ease-out duration-200"
@@ -328,7 +328,7 @@
                 <div :class="navOpen ? 'flex-1' : 'w-full'" class="h-full overflow-y-auto">
                     <div class="bg-white dark:bg-gray-800 min-h-full flex flex-col">
                         <div class="flex-1 p-6 text-gray-900 dark:text-gray-100">
-                            <h2 class="text-2xl font-bold mb-4">Welcome</h2>
+                            <h2 class="text-2xl font-bold mb-4">Welcome, {{ Auth::user()->name}}!</h2>
 
                             <!-- Dashboard Stats Cards -->
                             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-6">
@@ -470,12 +470,13 @@
                                 <div class="bg-teal-50 dark:bg-teal-900 p-4 rounded-lg">
                                     <div class="flex items-center">
                                         <div class="p-2 bg-teal-500 rounded-lg">
-                                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor"
-                                                viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z">
-                                                </path>
-                                            </svg>
+                                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path d="M4 6h2v12h-2V6z" fill="currentColor"/>
+                                        <path d="M6 6h6c2.2 0 4 1.8 4 4s-1.8 4-4 4H6v4h-2v-4h2V6z" fill="currentColor"/>
+                                        <path d="M6 8v4h6c1.1 0 2-0.9 2-2s-0.9-2-2-2H6z" fill="currentColor"/>
+                                        <path d="M2 9h8v1H2V9z" fill="currentColor"/>
+                                        <path d="M2 12h8v1H2v-1z" fill="currentColor"/>
+                                    </svg>
                                         </div>
                                         <div class="ml-4">
                                             <p class="text-sm font-medium text-teal-600 dark:text-teal-400">

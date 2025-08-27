@@ -1,6 +1,6 @@
 <x-app-layout>
     <div class="py-6">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+        <div class="w-full mx-auto sm:px-6 lg:px-8">
             <!-- Header Section -->
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg mb-6">
                 <div class="p-6">
@@ -98,7 +98,7 @@
                                 </label>
                                 <div class="relative rounded-md shadow-sm">
                                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                        <span class="text-gray-500 sm:text-sm">$</span>
+                                        <span class="text-gray-500 sm:text-sm">₱</span>
                                     </div>
                                     <input type="number" id="price" name="price" 
                                            value="{{ old('price') }}" required min="0" step="0.01"
@@ -134,7 +134,7 @@
                                     Total Amount
                                 </label>
                                 <div class="mt-1 p-3 bg-gray-50 dark:bg-gray-700 rounded-md border border-gray-300 dark:border-gray-600">
-                                    <span class="text-lg font-semibold text-gray-900 dark:text-white" id="total-amount">$0.00</span>
+                                    <span class="text-lg font-semibold text-gray-900 dark:text-white" id="total-amount">₱0.00</span>
                                 </div>
                             </div>
                         </div>
