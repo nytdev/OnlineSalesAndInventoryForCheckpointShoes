@@ -1,10 +1,4 @@
 <x-app-layout>
-    {{-- <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Dashboard') }}
-        </h2>
-    </x-slot> --}}
-
     <div class="overflow-hidden" x-data="{ navOpen: true, inventoryOpen: false }">
         <div class=" flex h-screen">
             <div class="flex flex-row lg:flex-row w-full">
@@ -43,7 +37,6 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M15 19l-7-7 7-7"></path>
                             </svg>
-                            {{-- ⬅️ --}}
                         </button>
                     </div>
 
@@ -78,12 +71,12 @@
                                     />
 
                                     <!-- Composite Products -->
-                                    <x-nav-item 
+                                    {{-- <x-nav-item 
                                         href="#"
                                         :icon="App\Helpers\NavigationHelper::getIcon('composite-products', 'w-4 h-4 mr-3')" 
                                         title="Composite Products" 
                                         size="small"
-                                    />
+                                    /> --}}
 
                                     <!-- Stock Management -->
                                     <x-nav-item 
@@ -312,15 +305,14 @@
                 <!-- Show Navigation Button (when hidden) -->
                 <div x-show="!navOpen" x-transition:enter="transition ease-out duration-200"
                     x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
-                    class="fixed top-4 left-4 pr-4">
+                    class="fixed top-20 left-4 pr-4 z-40">
                     <button @click="navOpen = true">
-                    {{-- <button @click="navOpen = true"
-                        class="p-1 bg-blue-600 hover:bg-blue-700 text-white rounded-lg shadow-lg transition-colors duration-200"> --}}
-                        {{-- <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <button @click="navOpen = true"
+                        class="p-1 bg-blue-600 hover:bg-blue-700 text-white rounded-lg shadow-lg transition-colors duration-200">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7">
                             </path>
-                        </svg> --}}
-                        ➡️
+                        </svg>
                     </button>
                 </div>
 
